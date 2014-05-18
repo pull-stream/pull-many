@@ -28,11 +28,26 @@ function partial(t, ary) {
   })
 }
 
-function tests(name, all) {
+function delay(read) {
+  return function (abort, cb) {
+    read(abort, function (end, data) {
+      setTimeout(function () {
+        cb(end, data)
+      }, Math.random() * 20)
+    })
+  }
+}
+
+function noDelay(read) {
+  return read
+}
+
+function tests(name, all, async) {
+  var maybeDelay = async ? delay : noDelay
 
   tape(name + ' simple', function (t) {
     pull(
-      many(all.map(pull.values)),
+      many(all.map(pull.values).map(maybeDelay)),
       pull.collect(function (err, ary) {
         //verify everything is there.
         t.deepEqual(ary.sort(compare), flatten(all).sort(compare))
@@ -60,7 +75,7 @@ function tests(name, all) {
               })
             }
           })
-      })),
+      }).map(maybeDelay)),
       pull.take(10),
       pull.collect(function (err, ary) {
         t.deepEqual(aborted, all.map(function () { return true }))
@@ -72,9 +87,11 @@ function tests(name, all) {
 }
 
 tests('3 items', [rand('a', 7), rand('b', 5), rand('c', 5)])
-
 tests('1 items', [rand('a', 7)])
 tests('empty', [])
+tests('3 items', [rand('a', 7), rand('b', 5), rand('c', 5)], true)
+tests('1 items', [rand('a', 7)], true)
+tests('empty', [], true)
 
 function error (err) {
   return function (abort, cb) {
@@ -94,15 +111,6 @@ tape('a stream errors', function (t) {
       })
     }
   }
-  function delay(read) {
-    return function (abort, cb) {
-      read(abort, function (end, data) {
-        setTimeout(function () {
-          cb(end, data)
-        }, Math.random() * 20)
-      })
-    }
-  }
 
   pull(
     many([
@@ -116,4 +124,5 @@ tape('a stream errors', function (t) {
     })
   )
 })
+
 
