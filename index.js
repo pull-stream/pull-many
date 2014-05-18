@@ -44,6 +44,9 @@ could you describe this declaritively or something?
 
 module.exports = function (ary) {
 
+  if(ary.length == 1) return ary[0]
+  if(ary.length == 0) return function (abort, cb) { cb(abort || true) }
+
   var inputs = (ary || []).map(create), i = 0, abort, cb
 
   function create (stream) {
@@ -52,11 +55,13 @@ module.exports = function (ary) {
 
   function check () {
     if(!cb) return
-    //if(abort) cb(abort), cb = function () {}
     clean()
-    var l = inputs.length
+    var l = inputs.length, _cb = cb
 
-    if(l === 0) return cb(abort ||  true)
+    if(l === 0) {
+      cb = null
+      return _cb(abort ||  true)
+    }
 
     //scan the inputs to check whether there is one we can use.
     for(var j = 0; j < l; j++) {
@@ -64,7 +69,8 @@ module.exports = function (ary) {
       if(current.ready && !current.ended) {
         current.ready = false
         i ++
-        return cb(null, current.data)
+        cb = null
+        return _cb(null, current.data)
       }
     }
   }
@@ -87,7 +93,7 @@ module.exports = function (ary) {
         current.reading = true
         var sync = true
         current.read(abort, function next (end, data) {
-          if(end === true || abort) return current.ended = true
+          if(end === true || abort) current.ended = true
           else if(end) abort = current.ended = end
           current.data = data
           current.ready = true
