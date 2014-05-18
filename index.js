@@ -44,9 +44,6 @@ could you describe this declaritively or something?
 
 module.exports = function (ary) {
 
-  if(ary.length == 1) return ary[0]
-  if(ary.length == 0) return function (abort, cb) { cb(abort || true) }
-
   var inputs = (ary || []).map(create), i = 0, abort, cb
 
   function create (stream) {
@@ -56,11 +53,11 @@ module.exports = function (ary) {
   function check () {
     if(!cb) return
     clean()
-    var l = inputs.length, _cb = cb
-
+    var l = inputs.length
+    var _cb = cb
     if(l === 0) {
       cb = null
-      return _cb(abort ||  true)
+      _cb(abort ||  true)
     }
 
     //scan the inputs to check whether there is one we can use.
