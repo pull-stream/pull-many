@@ -6,6 +6,7 @@ var assert = require('assert')
 
 async.test(strange, function (err, results, stats) {
     console.log(results)
+    assert.equal(stats.failures, 0)
   })
 
 function strange (async) {
