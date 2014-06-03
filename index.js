@@ -44,6 +44,7 @@ could you describe this declaritively or something?
 
 module.exports = function (ary) {
 
+  var open = !ary
   var inputs = (ary || []).map(create), i = 0, abort, cb
 
   function create (stream) {
@@ -55,7 +56,7 @@ module.exports = function (ary) {
     clean()
     var l = inputs.length
     var _cb = cb
-    if(l === 0) {
+    if(l === 0 && !open) {
       cb = null
       _cb(abort ||  true)
     }
@@ -106,9 +107,25 @@ module.exports = function (ary) {
     check()
   }
 
-  return function (_abort, _cb) {
+  function read (_abort, _cb) {
     abort = _abort
     cb = _cb
     next()
   }
+
+  read.add = function (stream) {
+    if(!stream) {
+      //the stream will now end when all the streams end.
+      open = false
+      //we just changed state, so we may need to cb
+      return next()
+    }
+    inputs.push(create(stream))
+  }
+
+  read.cap = function () {
+    read.add(null)
+  }
+
+  return read
 }
