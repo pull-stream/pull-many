@@ -57,18 +57,18 @@ module.exports = function (ary) {
     var l = inputs.length
     var _cb = cb
     if(l === 0 && capped) {
-      cb = null
-      _cb(abort ||  true)
+      cb = null; _cb(abort ||  true)
     }
 
     //scan the inputs to check whether there is one we can use.
     for(var j = 0; j < l; j++) {
       var current = inputs[(i + j) % l]
       if(current.ready && !current.ended) {
+        var data = current.data
         current.ready = false
-        i ++
-        cb = null
-        return _cb(null, current.data)
+        current.data = null
+        i ++; cb = null
+        return _cb(null, data)
       }
     }
   }
@@ -108,9 +108,7 @@ module.exports = function (ary) {
   }
 
   function read (_abort, _cb) {
-    abort = _abort
-    cb = _cb
-    next()
+    abort = _abort; cb = _cb; next()
   }
 
   read.add = function (stream) {
@@ -120,7 +118,8 @@ module.exports = function (ary) {
       //we just changed state, so we may need to cb
       return next()
     }
-    inputs.push(create(stream)); next()
+    inputs.push(create(stream))
+    next()
   }
 
   read.cap = function () {
