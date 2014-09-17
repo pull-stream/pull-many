@@ -1,7 +1,7 @@
 {
   "name": "pull-many",
   "description": "combine many pull-stream sources into one",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage": "https://github.com/dominictarr/pull-many",
   "repository": {
     "type": "git",
