@@ -7,10 +7,12 @@
     "type": "git",
     "url": "git://github.com/dominictarr/pull-many.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pull-stream": "~2.27.0"
+  },
   "devDependencies": {
-    "interleavings": "0.0.1",
-    "tape": "~2.13.1",
+    "interleavings": "~0.3.0",
+    "tape": "~4.0.0",
     "pull-stream": "~2.23.0"
   },
   "scripts": {
