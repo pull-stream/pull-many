@@ -125,4 +125,20 @@ tape('a stream errors', function (t) {
   )
 })
 
+tape('abort an uncapped stream on an error', function (t) {
 
+  var err = new Error('intentional')
+
+  var source = many()
+
+  source.add(error(err))
+
+  pull(
+    source,
+    pull.drain(null, function (_err) {
+      t.equal(_err, err)
+      t.end()
+    })
+  )
+
+})
