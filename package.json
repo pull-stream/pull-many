@@ -8,12 +8,12 @@
     "url": "git://github.com/dominictarr/pull-many.git"
   },
   "dependencies": {
-    "pull-stream": "~2.27.0"
+    "pull-stream": "^3.4.5"
   },
   "devDependencies": {
     "interleavings": "~0.3.0",
-    "tape": "~4.0.0",
-    "pull-stream": "~2.23.0"
+    "pull-stream": "~2.23.0",
+    "tape": "~4.0.0"
   },
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
