@@ -32,7 +32,7 @@ it goes into READY
 
 on read, trigger read on every stream in START or READY
 
-on abort, trigger abort on every stream in START or READY
+on abort, trigger abort on all streams immediately***
 
 if a stream is in READY, and big stream is in ABORT,
 trigger abort
@@ -131,3 +131,4 @@ module.exports = function (ary) {
 
   return read
 }
+
