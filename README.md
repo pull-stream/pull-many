@@ -31,6 +31,21 @@ pull(
     //=> [1, 1, 2, 2, 3, 4, 3, 5, 6]
   })
 )
+
+// add streams later too
+var m = many()
+
+pull(
+  m,
+  pull.collect(function (err, ary) {
+    if(err) throw err
+    console.log(ary)
+    //=> [1,2,3,4,5,6]
+  })
+)
+
+m.add(pull.values([1,2,3]))
+m.add(pull.values([4,5,6]))
 ```
 
 ## License
