@@ -6,11 +6,8 @@ A chunk is read from each stream,
 and the next available chunk is
 selected in a round-robbin.
 
-If a any stream errors, then all the remaining streams are aborted,
-and then the sink is passed the error. If you want instead to drop the
-erroring stream, and continue reading from the other streams, you should
-pipe each stream through a stream that handles the error(ignores, logs, whatever)
-and then ends normally.
+If a stream errors, other streams continue to be read from.
+The error is only passed to the sink when all streams have ended.
 
 ## Example
 
