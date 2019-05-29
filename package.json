@@ -12,7 +12,6 @@
   },
   "devDependencies": {
     "interleavings": "^1.0.0",
-    "pull-stream": "~2.23.0",
     "tape": "^4.10.2"
   },
   "scripts": {
