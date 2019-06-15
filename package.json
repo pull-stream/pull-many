@@ -11,9 +11,8 @@
     "pull-stream": "^3.4.5"
   },
   "devDependencies": {
-    "interleavings": "~0.3.0",
-    "pull-stream": "~2.23.0",
-    "tape": "~4.0.0"
+    "interleavings": "^1.0.0",
+    "tape": "^4.10.2"
   },
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
